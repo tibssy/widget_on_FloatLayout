@@ -1,0 +1,31 @@
+<CustomButton@Button>
+    font_size: (root.height*1**2 + root.width*1**2)/5
+	background_color: (0,0,0,0)
+	background_normal: ''
+	color: (0,0,0,1)
+	canvas.before:
+		Color:
+			rgba: (1,1,1,1) if self.state == 'normal' else (0,1,0,1)
+		RoundedRectangle:
+			size: self.size
+			pos: self.pos
+			radius: [100]
+
+<MyLayout>
+    ratio: self.width / self.height
+
+    Image:
+        source: 'images/hands.png'
+        id: img
+        allow_stretch: True
+        image_size: [root.size[0], root.size[0] / self.image_ratio] if self.image_ratio > root.ratio else [root.size[1] * self.image_ratio, root.size[1]]
+        offset: [int((i - j) / 2) for i, j in zip(root.size, self.image_size)]
+
+    CustomButton:
+        id: btn
+        place: (0.3, 0.92)
+        btn_size: (0.05, 0.05)
+        text: '1'
+        size_hint: self.btn_size[0], root.width * self.btn_size[1] / root.height
+        pos_hint: {'center_x': (self.place[0] * img.image_size[0] + img.offset[0]) / root.size[0], 'center_y': (self.place[1] * img.image_size[1] + img.offset[1]) / root.size[1]} if img.offset else {'center_x': 0, 'center_y': 0}
+
